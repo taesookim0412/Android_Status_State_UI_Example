@@ -8,27 +8,40 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
+import com.example.status_statedemo.databinding.ActivityMainBinding
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
+    val viewModel by viewModels<StateViewModel>()
+    val vals = StateVals
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        val view: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        view.viewModel = viewModel
+        view.setLifecycleOwner(this)
+        setSupportActionBar(view.toolbar)
+
         CoroutineScope(Dispatchers.IO).launch{
             val time = System.currentTimeMillis()
-            delay(5000)
+            delay(2000)
             runOnUiThread(Runnable{
-                progress_circular.visibility = View.GONE
-                progress_Done.visibility = View.VISIBLE
+                viewModel.progress.value[vals.prog] = View.GONE
+                viewModel.progress.value[vals.succ] = View.VISIBLE
+                viewModel.progressVar.value = View.GONE
+                viewModel.success.value = View.VISIBLE
             })
-            delay(5000)
+            delay(2000)
             runOnUiThread(Runnable{
-                progress_Done.visibility = View.GONE
-                progress_Error.visibility = View.VISIBLE
+                viewModel.progress.value[vals.succ] = View.GONE
+                viewModel.progress.value[vals.err] = View.VISIBLE
+                viewModel.success.value = View.GONE
+                viewModel.error.value = View.VISIBLE
             })
             println("Triggered after ${System.currentTimeMillis() - time } ms")
 

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="viewModel" type="com.example.status_statedemo.StateViewModel" />
+    </data>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,21 +31,23 @@
                 android:minWidth="25dp"
                 android:max="100"
                 android:indeterminate="true"
-                android:progress="1" />
+                android:progress="1"
+                android:visibility="@{viewModel.progressVar}"/>
 
             <ImageView
                 android:id="@+id/progress_Done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="@{viewModel.success}"
                 app:srcCompat="@drawable/baseline_done_all_black_18dp" />
 
             <ImageView
                 android:id="@+id/progress_Error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:srcCompat="@drawable/baseline_warning_black_18dp" />
+                android:visibility="@{viewModel.error}"
+                app:srcCompat="@drawable/baseline_warning_black_18dp"
+                />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -56,5 +62,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </layout>
